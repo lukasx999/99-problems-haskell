@@ -36,5 +36,29 @@ data NestedList a
     | List [NestedList a]
     deriving (Eq, Show)
 
+flatten :: NestedList a -> [a]
+flatten (Elem x)  = [x]
+flatten (List xs) = concatMap flatten xs
+
+compress_ :: Eq a => [a] -> [a]
+compress_ xs =
+    let aux acc xs =
+            case xs of
+            [] -> acc
+            [x] -> x:acc
+            fst:tl@(snd:_) ->
+                if fst == snd then
+                    aux acc tl
+                else
+                    aux (fst:acc) tl
+    in reverse $ aux [] xs
+
+compress :: Eq a => [a] -> [a]
+compress (fst:tl@(snd:_))
+    | fst == snd = compress tl
+    | otherwise = fst : compress tl
+compress x = x
+
+
 main = do
     putStrLn "Hello"
