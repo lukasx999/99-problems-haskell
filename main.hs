@@ -28,5 +28,13 @@ myReverse xs =
             hd:tl -> aux (hd:acc) tl
     in aux [] xs
 
+isPalindrome :: Eq a => [a] -> Bool
+isPalindrome xs = xs == reverse xs
+
+data NestedList a
+    = Elem a
+    | List [NestedList a]
+    deriving (Eq, Show)
+
 main = do
     putStrLn "Hello"
