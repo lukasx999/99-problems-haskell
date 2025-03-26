@@ -88,4 +88,24 @@ encode xs =
             hd:tl -> aux ((length hd, head hd) : acc) tl
     in reverse $ aux [] $ pack xs
 
+-- 11
+
+data Encoding a
+    = Single a
+    | Multiple Int a
+    deriving Show
+
+encodeModified :: Eq a => [a] -> [Encoding a]
+encodeModified xs =
+    let aux acc xs = case xs of
+            []    -> acc
+            hd:tl ->
+                let len = length hd in
+                let new = if len == 1 then
+                        Single (head hd)
+                    else
+                        Multiple len (head hd)
+                in aux (new : acc) tl
+    in reverse $ aux [] $ pack xs
+
 main = return ()
